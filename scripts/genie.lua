@@ -36,7 +36,7 @@ function exerciseProject(name)
 	configuration {}
 	
 	includedirs {
-		path.join("JN_DIR", "include")
+		path.join(JN_DIR, "include")
 	}
 	
 	files {
@@ -44,9 +44,9 @@ function exerciseProject(name)
 		path.join(JN_DIR, "exercises", name, "**.h"),
 	}
 	
-	links {
-		"jn"
-	}
+	--links {
+	--	"jn"
+	--}
 	
 end
 
