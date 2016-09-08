@@ -1,8 +1,8 @@
-JN_DIR = path.getabsolute("..")
-JN_BUILD_DIR = path.join(JN_DIR, ".build")
-JN_LIB_DIR = path.join(JN_DIR, "3rdparty")
+JKN_DIR = path.getabsolute("..")
+JKN_BUILD_DIR = path.join(JKN_DIR, ".build")
+JKN_LIB_DIR = path.join(JKN_DIR, "3rdparty")
 
-solution "jn.exercies"
+solution "jkn.exercies"
 	configurations {
 		"debug",
 		"release"
@@ -19,14 +19,14 @@ solution "jn.exercies"
 	configuration {} --reset
 
 dofile("toolchain.lua")
-toolchain(JN_BUILD_DIR, JN_LIB_DIR)
+toolchain(JKN_BUILD_DIR, JKN_LIB_DIR)
 
-project "jn"
-	uuid(os.uuid("jn"))
+project "jkn"
+	uuid(os.uuid("JKN"))
 	kind "StaticLib"
 
 	files {
-		path.join(JN_DIR, "include", "**.h")
+		path.join(JKN_DIR, "include", "**.h")
 	}
 
 function exerciseProject(name)
@@ -37,16 +37,16 @@ function exerciseProject(name)
 	configuration {}
 
 	includedirs {
-		path.join(JN_DIR, "include")
+		path.join(JKN_DIR, "include")
 	}
 
 	files {
-		path.join(JN_DIR, "exercises", name, "**.cpp"),
-		path.join(JN_DIR, "exercises", name, "**.h"),
+		path.join(JKN_DIR, "exercises", name, "**.cpp"),
+		path.join(JKN_DIR, "exercises", name, "**.h"),
 	}
 
 	--links {
-	--	"jn"
+	--	"JKN"
 	--}
 
 end
