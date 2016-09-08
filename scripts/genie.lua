@@ -15,6 +15,7 @@ solution "jn.exercies"
 
 	language "C++"
 
+	startproject "ex-00-helloword"
 	configuration {} --reset
 
 dofile("toolchain.lua")
@@ -53,3 +54,4 @@ end
 group("exercises")
 exerciseProject("00-helloworld")
 exerciseProject("01-threethreads")
+exerciseProject("02-random")
