@@ -3,6 +3,7 @@
 #include <stdint.h>
 
 #include <windows.h>
+#include "semaphore.h"
 
 namespace jn
 {
@@ -24,7 +25,7 @@ namespace jn
         {
             if (m_running)
             {
-                shutdown();
+                join();
             }
         }
 
@@ -43,10 +44,10 @@ namespace jn
 
             m_running = true;
 
-            // hmm mutex?
+            m_semaphore.wait();
         }
 
-        void shutdown()
+        void join()
         {
             WaitForSingleObject(m_handle, INFINITE);
             GetExitCodeThread(m_handle, (DWORD*)&m_exitCode);
@@ -69,7 +70,7 @@ namespace jn
 
         int32_t run()
         {
-            // hmm mutex?
+            m_semaphore.post();
             int32_t result = m_func(m_userData);
             return result;
         }
@@ -85,6 +86,8 @@ namespace jn
 
         HANDLE m_handle;
         int32_t m_exitCode;
+
+        Semaphore m_semaphore;
 
         bool m_running;
 

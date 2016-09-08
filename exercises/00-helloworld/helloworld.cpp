@@ -6,13 +6,15 @@
 int32_t func(void*)
 {
     printf("Hello from thread\n");
-    return 0;
+    return 55;
 }
 
 int main(int argc, char** argv)
 {
     jn::Thread thread;
     thread.start(func);
-    
+    thread.join();
+
+    printf("Thread exited with code %d\n", thread.getExitCode());
     return 0;
 }
