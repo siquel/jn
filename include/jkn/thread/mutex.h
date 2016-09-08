@@ -2,7 +2,7 @@
 
 #include <windows.h>
 
-namespace jn
+namespace jkn
 {
     struct Mutex
     {

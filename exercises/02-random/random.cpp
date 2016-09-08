@@ -1,7 +1,7 @@
 #include <vector> // vector
 #include <time.h> // time
-#include <jn/jn.h>
-#include <jn/thread/thread.h>
+#include <jkn/jkn.h>
+#include <jkn/thread/thread.h>
 /*
 Implement a program whereone thread draw random numbers from interval 1. . . 10 once a second,
 second thread prints the random numbers using std::cout, and main thread waits enter button. 
@@ -25,12 +25,14 @@ int32_t rngProc(void*)
         int32_t random = rand() % 10 + 1;
         ::Sleep(1000);
     }
+
+    return 0;
 }
 
 int main(int argc, char** argv)
 {
     srand(uint32_t(time(NULL)));
-    jn::Thread rngThread;
-    jn::Thread printThread;
+    jkn::Thread rngThread;
+    jkn::Thread printThread;
     return 0;
 }

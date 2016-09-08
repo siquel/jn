@@ -3,7 +3,7 @@
 #include <windows.h>
 #include <stdint.h> // uint32_t
 
-namespace jn
+namespace jkn
 {
     struct Semaphore
     {

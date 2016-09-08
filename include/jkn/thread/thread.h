@@ -5,7 +5,7 @@
 #include <windows.h>
 #include "semaphore.h"
 
-namespace jn
+namespace jkn
 {
     struct Thread
     {

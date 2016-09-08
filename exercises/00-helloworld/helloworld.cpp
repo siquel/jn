@@ -1,6 +1,6 @@
-#include <jn/jn.h>
+#include <jkn/jkn.h>
 #include <stdio.h>
-#include <jn/thread/thread.h>
+#include <jkn/thread/thread.h>
 
 /*
 write a program which starts a thread that prints hello world once a second
@@ -29,7 +29,7 @@ int main(int argc, char** argv)
 {
     SetConsoleCtrlHandler(sigHandler, TRUE);
 
-    jn::Thread thread;
+    jkn::Thread thread;
     thread.start(func);
     thread.join();
 

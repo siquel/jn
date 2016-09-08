@@ -1,6 +1,6 @@
-#include <jn/jn.h>
-#include <jn/thread/thread.h>
-#include <jn/thread/mutex.h>
+#include <jkn/jkn.h>
+#include <jkn/thread/thread.h>
+#include <jkn/thread/mutex.h>
 #include <stdio.h>
 /*
 Implement a code that starts three threads that prints "Hello world"
@@ -10,7 +10,7 @@ sections!
 
 static bool s_exit = false;
 
-jn::Mutex stdoutMutex;
+jkn::Mutex stdoutMutex;
 
 int32_t threadProc(void* data)
 {
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
     SetConsoleCtrlHandler(sigHandler, TRUE);
 
     const uint32_t numThreads = 3;
-    jn::Thread threads[numThreads];
+    jkn::Thread threads[numThreads];
     uint32_t ids[numThreads] = {};
     for (uint32_t i = 0; i < numThreads; ++i)
     {
