@@ -1,8 +1,14 @@
 #pragma once
 
+#include "../platform.h"
 #include <stdint.h>
 
-#include <windows.h>
+#if JKN_PLATFORM_WINDOWS
+#   include <windows.h>
+#elif JKN_PLATFORM_LINUX
+#   include <pthread.h>
+#endif
+
 #include "semaphore.h"
 
 namespace jkn
@@ -14,7 +20,11 @@ namespace jkn
         Thread() :
             m_func(NULL),
             m_userData(NULL),
+#if JKN_PLATFORM_WINDOWS
             m_handle(INVALID_HANDLE_VALUE),
+#elif JKN_PLATFORM_LINUX
+            m_handle(0),
+#endif
             m_exitCode(0),
             m_running(false)
         {
@@ -34,6 +44,7 @@ namespace jkn
             m_func = _func;
             m_userData = _userData;
 
+#if JKN_PLATFORM_WINDOWS
             m_handle = CreateThread(
                 NULL,
                 _stackSize,
@@ -41,6 +52,12 @@ namespace jkn
                 this,
                 0,
                 NULL);
+#elif JKN_PLATFORM_LINUX
+            pthread_attr_t attr;
+            int32_t result = pthread_attr_init(&attr);
+
+            JKN_ASSERT(result == 0, "pthread_attr_init failed with code %d", result);
+#endif
 
             m_running = true;
 
@@ -49,10 +66,13 @@ namespace jkn
 
         void join()
         {
+#if JKN_PLATFORM_WINDOWS
             WaitForSingleObject(m_handle, INFINITE);
             GetExitCodeThread(m_handle, (DWORD*)&m_exitCode);
             CloseHandle(m_handle);
             m_handle = INVALID_HANDLE_VALUE;
+#elif JKN_PLATFORM_LINUX
+#endif
 
             m_running = false;
         }
@@ -74,17 +94,24 @@ namespace jkn
             int32_t result = m_func(m_userData);
             return result;
         }
-
+#if JKN_PLATFORM_WINDOWS
         static DWORD WINAPI threadProc(void* arg)
         {
             int32_t result = ((Thread*)arg)->run();
             return result;
         }
+#elif JKN_PLATFORM_LINUX
+
+#endif
 
         ThreadFunc m_func;
         void* m_userData;
 
+#if JKN_PLATFORM_WINDOWS
         HANDLE m_handle;
+#elif JKN_PLATFORM_LINUX
+        pthread_t m_handle;
+#endif
         int32_t m_exitCode;
 
         Semaphore m_semaphore;

@@ -34,6 +34,11 @@ function exerciseProject(name)
 		uuid(os.uuid("ex-" .. name))
 		kind "ConsoleApp"
 
+    configuration { "linux" }
+        links {
+            "pthread"
+        }
+
 	configuration {}
 
 	includedirs {
