@@ -63,6 +63,7 @@ int32_t rngProc(void*)
     return 0;
 }
 
+
 int main(int /*argc*/, char** /*argv*/)
 {
     srand(uint32_t(time(NULL)));
@@ -73,13 +74,7 @@ int main(int /*argc*/, char** /*argv*/)
     printThread.start(printProc);
 
     printf("Press ENTER to stop\n");
-
-#if JKN_PLATFORM_WINDOWS
-    // wait for enter
-    while (!GetAsyncKeyState(VK_RETURN)) {}
-
-#elif JKN_PLATFORM_LINUX
-#endif
+    getchar();
     
     s_exit = true;
 

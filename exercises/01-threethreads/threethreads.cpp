@@ -34,7 +34,7 @@ BOOL WINAPI sigHandler(DWORD sig)
 }
 #endif
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 #if JKN_PLATFORM_WINDOWS
     SetConsoleCtrlHandler(sigHandler, TRUE);
