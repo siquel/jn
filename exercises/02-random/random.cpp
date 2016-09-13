@@ -1,9 +1,13 @@
 #include <vector> // vector
 #include <time.h> // time
-#include <jkn/jkn.h>
+#include <jkn/macros.h>
 #include <jkn/thread/thread.h>
 #include <jkn/thread/mutex.h>
+#include <jkn/os.h>
+#include <jkn/platform.h>
 #include <numeric> // accumulate
+#include <stdlib.h> // rand
+#include <stdio.h> // printf
 /*
 Implement a program whereone thread draw random numbers from interval 1. . . 10 once a second,
 second thread prints the random numbers using std::cout, and main thread waits enter button. 
@@ -28,7 +32,7 @@ int32_t printProc(void*)
 
         while (index < buffer.size())
         {
-            printf("%d (size = %d)\n", buffer[index], buffer.size());
+            printf("%d (size = %d)\n", buffer[index], uint32_t(buffer.size()));
             ++index;
         }
 
@@ -53,13 +57,13 @@ int32_t rngProc(void*)
         indexMutex.unlock();
         bufferMutex.unlock();
 
-        ::Sleep(1000);
+        jkn::sleep(1000);
     }
 
     return 0;
 }
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
     srand(uint32_t(time(NULL)));
     jkn::Thread rngThread;
@@ -68,8 +72,12 @@ int main(int argc, char** argv)
     rngThread.start(rngProc);
     printThread.start(printProc);
 
+#if JKN_PLATFORM_WINDOWS
     // wait for enter
     while (!GetAsyncKeyState(VK_RETURN)) {}
+
+#elif JKN_PLATFORM_LINUX
+#endif
     
     s_exit = true;
 

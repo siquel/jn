@@ -1,8 +1,9 @@
 #include <jkn/jkn.h>
 #include <jkn/thread/thread.h>
+#include <jkn/os.h>
 #include <stdio.h> // FILE
 #include <vector>
-#include <string>
+#include <string.h>
 #include <jkn/thread/mutex.h>
 /*
 write a program that starts two threads. The first one reads strings
@@ -32,7 +33,7 @@ int32_t fileRoutine(void*)
         {
             fwrite(&buffer[i], sizeof(char), 1, file);
             index += 1;
-            ::Sleep(100);
+            jkn::sleep(100);
         }
     }
 
@@ -69,7 +70,7 @@ int32_t inputFunc(void*)
     return 0;
 }
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
     jkn::Thread osThread;
     jkn::Thread fileThread;
