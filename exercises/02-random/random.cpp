@@ -72,6 +72,8 @@ int main(int /*argc*/, char** /*argv*/)
     rngThread.start(rngProc);
     printThread.start(printProc);
 
+    printf("Press ENTER to stop\n");
+
 #if JKN_PLATFORM_WINDOWS
     // wait for enter
     while (!GetAsyncKeyState(VK_RETURN)) {}

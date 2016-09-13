@@ -35,7 +35,7 @@ namespace jkn
         {
             return WAIT_OBJECT_0 == WaitForSingleObject(
                 m_handle,
-                (msecs < 0) ? INFINITE : _msecs
+                (_msecs < 0) ? INFINITE : _msecs
                 );
         }
 
