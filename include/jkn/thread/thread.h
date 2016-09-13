@@ -55,8 +55,17 @@ namespace jkn
 #elif JKN_PLATFORM_LINUX
             pthread_attr_t attr;
             int32_t result = pthread_attr_init(&attr);
-
             JKN_ASSERT(result == 0, "pthread_attr_init failed with code %d", result);
+
+            if (_stackSize != 0)
+            {
+                result = pthread_attr_setstacksize(&attr, _stackSize);
+                JKN_ASSERT(result == 0, "pthread_attr_setstacksize failed with code %d", result);
+            }
+
+            result = pthread_create(&m_handle, &attr, Thread::threadProc, this);
+            JKN_ASSERT(result == 0, "pthread_create failed with code %d", result);
+            (void)result;
 #endif
 
             m_running = true;
@@ -66,14 +75,27 @@ namespace jkn
 
         void join()
         {
+            JKN_ASSERT(m_running, "Not running");
 #if JKN_PLATFORM_WINDOWS
             WaitForSingleObject(m_handle, INFINITE);
             GetExitCodeThread(m_handle, (DWORD*)&m_exitCode);
             CloseHandle(m_handle);
             m_handle = INVALID_HANDLE_VALUE;
 #elif JKN_PLATFORM_LINUX
-#endif
+            union 
+            {
+                void* ptr;
+                int32_t i;
+            } cast;
 
+            int32_t result = pthread_join(m_handle, &cast.ptr);
+            JKN_ASSERT(result == 0, "pthread_join_failed with code %d", result);
+
+            m_exitCode = cast.i;
+            m_handle = 0;
+
+            (void)result;
+#endif
             m_running = false;
         }
 
@@ -101,7 +123,16 @@ namespace jkn
             return result;
         }
 #elif JKN_PLATFORM_LINUX
-
+        static void* threadProc(void* arg)
+        {
+            union
+            {
+                void* ptr;
+                int32_t i;
+            } cast;
+            cast.i = ((Thread*)arg)->run();
+            return cast.ptr;
+        }
 #endif
 
         ThreadFunc m_func;
@@ -117,9 +148,7 @@ namespace jkn
         Semaphore m_semaphore;
 
         bool m_running;
-
         
-
         Thread(const Thread&);
         Thread& operator=(const Thread&);
     };

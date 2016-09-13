@@ -27,7 +27,7 @@ BOOL WINAPI sigHandler(DWORD sig)
 }
 #endif
 
-int main(int argc, char** argv)
+int main(int /*argc*/, char** /*argv*/)
 {
 #if JKN_PLATFORM_WINDOWS
     SetConsoleCtrlHandler(sigHandler, TRUE);
@@ -36,6 +36,5 @@ int main(int argc, char** argv)
     jkn::Thread thread;
     thread.start(func);
     thread.join();
-
     return 0;
 }
