@@ -1,9 +1,15 @@
 #pragma once
 
-#include <windows.h>
+#include "../platform.h"
+#if JKN_PLATFORM_WINDOWS
+#   include <windows.h>
+#elif JKN_PLATFORM_LINUX
+#   include <pthread.h>
+#endif
 
 namespace jkn
 {
+#if JKN_PLATFORM_WINDOWS
     struct Mutex
     {
         Mutex()
@@ -31,6 +37,53 @@ namespace jkn
         Mutex(const Mutex&);
         Mutex& operator=(const Mutex&);
     };
+
+#elif JKN_PLATFORM_LINUX
+    
+    struct Mutex
+    {
+        Mutex()
+        {
+            pthread_mutexattr_t attr;
+            int32_t result = pthread_mutexattr_init(&attr);
+            JKN_ASSERT(result == 0, "pthread_mutexattr_init failed with code %d", result);
+
+            result = pthread_mutexattr_settype(&attr, PTHREAD_MUTEX_RECURSIVE);
+            JKN_ASSERT(result == 0, "pthread_mutexattr_settype failed with code %d", result);
+
+            result = pthread_mutex_init(&m_handle, &attr);
+            JKN_ASSERT(result == 0, "pthread_mutex_init failed with code %d", result);
+            (void)result;
+        }
+
+        ~Mutex()
+        {
+            int32_t result = pthread_mutex_destroy(&m_handle);
+            JKN_ASSERT(result == 0, "pthread_mutex_destroy failed with code %d", result);
+            (void)result;
+        }
+
+        void lock()
+        {
+            int32_t result = pthread_mutex_lock(&m_handle);
+            JKN_ASSERT(result == 0, "pthread_mutex_lock failed with code %d", result);
+            (void)result;
+        }
+
+        void unlock()
+        {
+            int32_t result = pthread_mutex_unlock(&m_handle);
+            JKN_ASSERT(result == 0, "pthread_mutex_unlock failed with code %d", result);
+            (void)result;
+        }
+
+        pthread_mutex_t m_handle;
+    private:
+        Mutex(const Mutex&);
+        Mutex& operator=(const Mutex&);
+    };
+
+#endif
 
     struct ScopedMutex
     {
