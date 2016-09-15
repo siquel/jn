@@ -41,6 +41,8 @@ namespace jkn
 
         void start(ThreadFunc _func, void* _userData = NULL, uint32_t _stackSize = 0)
         {
+            JKN_ASSERT(!m_running, "Already running");
+
             m_func = _func;
             m_userData = _userData;
 
