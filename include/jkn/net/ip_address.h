@@ -21,11 +21,12 @@ namespace jkn
     {
         IPAddressType::Enum m_type;
 
+        // Stored in network byte order (big endian)
         union
         {
             uint32_t m_ipv4;
             uint16_t m_ipv6[8];
-        } m_address;
+        };
 
         uint16_t m_port;
     };

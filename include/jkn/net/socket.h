@@ -10,16 +10,23 @@ namespace jkn
 {
     struct IPAddress;
 
-    class Socket
+    class UDPSocket
     {
     public:
-        Socket(const IPAddress& _address);
+        UDPSocket(const IPAddress& _address);
 
-        ~Socket();
+        ~UDPSocket();
 
         bool send(const IPAddress& _to, const void* _data, size_t _bytes);
 
         int32_t receive();
+
+    private:
+#if JKN_PLATFORM_WINDOWS
+        size_t m_socket;
+#elif JKN_PLATFORM_POSIX
+        int32_t m_socket;
+#endif
     };
 }
 
