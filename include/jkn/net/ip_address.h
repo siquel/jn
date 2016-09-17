@@ -30,6 +30,10 @@ namespace jkn
 
         uint16_t m_port;
     };
+
+    void addressGetHostIp(const IPAddress& _address, char* _hostName, size_t _len);
+
+    void addressSetHost(IPAddress& _address, uint8_t _a, uint8_t _b, uint8_t _c, uint8_t _d);
 }
 
 #endif
