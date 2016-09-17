@@ -5,7 +5,3 @@
 
 #define JKN_CONCATENATE_(x, y) x ## y
 #define JKN_CONCATENATE(x, y) JKN_CONCATENATE_(x, y)
-
-#ifndef JKN_ASSERT
-#   define JKN_ASSERT(condition, ...) do { } while(0)
-#endif

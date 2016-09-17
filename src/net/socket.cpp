@@ -14,7 +14,7 @@
 
 #include "jkn/net/socket.h"
 #include "jkn/net/ip_address.h"
-#include "jkn/macros.h"
+#include "jkn/error.h"
 
 namespace jkn
 {

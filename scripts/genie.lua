@@ -22,6 +22,13 @@ solution "jn"
 		"JKN_CONFIG_SOCKETS=1"
 	}
 
+	configuration { "debug" }
+		defines {
+			"JKN_CONFIG_DEBUG=1"
+		}
+
+	configuration {}
+
 dofile("toolchain.lua")
 toolchain(JN_BUILD_DIR, JN_LIB_DIR)
 

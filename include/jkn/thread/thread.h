@@ -9,7 +9,9 @@
 #   include <pthread.h>
 #endif
 
+#include "jkn/error.h" // JKN_ASSERT
 #include "semaphore.h"
+
 
 namespace jkn
 {
