@@ -18,6 +18,10 @@ solution "jn"
 	startproject "ex-00-helloword"
 	configuration {} --reset
 
+	defines {
+		"JKN_CONFIG_SOCKETS=1"
+	}
+
 dofile("toolchain.lua")
 toolchain(JN_BUILD_DIR, JN_LIB_DIR)
 
@@ -44,9 +48,9 @@ function exerciseProject(name)
 		path.join(JN_DIR, "exercises", name, "**.h"),
 	}
 
-	--links {
-	--	"JKN"
-	--}
+	links {
+		"jn"
+	}
 
 end
 

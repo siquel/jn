@@ -10,7 +10,3 @@ project "jn"
   includedirs {
     path.join("..", "include")
   }
-
-  defines {
-    "JKN_CONFIG_SOCKETS=1"
-  }
