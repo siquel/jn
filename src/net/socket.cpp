@@ -135,6 +135,27 @@ namespace jkn
         // return bytes read
         return result;
     }
+
+    bool UDPSocket::send(const IPAddress& _to, const void* _data, int32_t _bytes)
+    {
+        JKN_ASSERT(_bytes > 0, "_bytes must be higher than 0");
+        JKN_ASSERT(m_error == 0, "Socket has error");
+        JKN_ASSERT(_to.m_type != IPAddressType::None, "Address must be ipv4 or ipv6 address");
+
+        if (_to.m_type == IPAddressType::IPv4)
+        {
+            sockaddr_in sockAddr;
+            memset(&sockAddr, 0, sizeof(sockAddr));
+            sockAddr.sin_family = AF_INET;
+            sockAddr.sin_port = htons(_to.m_port);
+            sockAddr.sin_addr.S_un.S_addr = _to.m_ipv4;
+            int32_t sentBytes = sendto(m_socket, (char*)_data, _bytes, 0 /* flags */, (struct sockaddr*)&sockAddr, sizeof(sockaddr_in));
+
+            return sentBytes == _bytes;
+        }
+        
+        return false;
+    }
 }
 
 #endif

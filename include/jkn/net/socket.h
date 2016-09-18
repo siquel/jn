@@ -28,7 +28,7 @@ namespace jkn
 
         ~UDPSocket();
 
-        bool send(const IPAddress& _to, const void* _data, size_t _bytes);
+        bool send(const IPAddress& _to, const void* _data, int32_t _bytes);
 
         /// \brief Receive a message from a socket
         /// 
