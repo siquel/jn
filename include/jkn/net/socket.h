@@ -30,7 +30,13 @@ namespace jkn
 
         bool send(const IPAddress& _to, const void* _data, size_t _bytes);
 
-        int32_t receive();
+        /// \brief Receive a message from a socket
+        /// 
+        /// \param[out] _data Buffer where to read
+        /// \param[in] _bufferLength Length of _data
+        /// \param[out] _from The origin of the packet
+        /// \return The bytes read
+        int32_t receive(void* _data, int32_t _bufferLength, IPAddress& _from);
 
     private:
 #if JKN_PLATFORM_WINDOWS

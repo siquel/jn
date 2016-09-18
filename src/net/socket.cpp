@@ -88,6 +88,53 @@ namespace jkn
 #endif
         m_socket = 0;
     }
+
+    int32_t UDPSocket::receive(void* _data, int32_t _bufferLength, IPAddress& _from)
+    {
+        // If you want to write code that supports multiple protocols, use sockaddr_storage (SO)
+        // http://stackoverflow.com/questions/18995361/can-recvfrom-function-from-socket-extract-the-sender-ip-address
+
+        sockaddr_in sockaddrFrom;
+        socklen_t length = sizeof(sockaddrFrom);
+
+        int32_t result = ::recvfrom(m_socket, (char*)_data, _bufferLength, 0 /* flags */, (struct sockaddr*) &sockaddrFrom, &length);
+
+#if JKN_PLATFORM_WINDOWS
+        
+        if (result == SOCKET_ERROR)
+        {
+            int32_t error = WSAGetLastError();
+
+            if (error == WSAEWOULDBLOCK)
+            {
+                return 0;
+            }
+
+            // TODO trace
+
+            return 0;
+        }
+#endif
+        JKN_ASSERT(result >= 0, "Invalid result from recvfrom()");
+
+        if (sockaddrFrom.sin_family == AF_INET)
+        {
+            struct sockaddr_in* ipv4 = (struct sockaddr_in*) &sockaddrFrom;
+            _from.m_type = IPAddressType::IPv4;
+            _from.m_ipv4 = ipv4->sin_addr.S_un.S_addr;
+            _from.m_port = ntohs(ipv4->sin_port); // port is host byte
+        }
+        else if (sockaddrFrom.sin_family == AF_INET6)
+        {
+            struct sockaddr_in6* ipv6 = (struct sockaddr_in6*) &sockaddrFrom;
+            _from.m_type = IPAddressType::IPv6;
+            memcpy(_from.m_ipv6, &ipv6->sin6_addr, sizeof(_from.m_ipv6));
+            _from.m_port = ntohs(ipv6->sin6_port); // port is host byte
+        }
+
+        // return bytes read
+        return result;
+    }
 }
 
 #endif
