@@ -33,7 +33,18 @@ namespace jkn
 
     void addressGetHostIp(const IPAddress& _address, char* _hostName, size_t _len);
 
+    /// \param _a first octet host byte order
+    /// \param _b second octet host byte order
+    /// \param _c third octet host byte order
+    /// \param _d fourth octet host byte order
     void addressSetHost(IPAddress& _address, uint8_t _a, uint8_t _b, uint8_t _c, uint8_t _d);
+
+    /// \param _ipv4 ipv4 address in host byte order
+    void addressSetHost(IPAddress& _address, uint32_t _ipv4);
+
+    /// host byte order
+    void addressSetHost(IPAddress& _address, uint16_t _a, uint16_t _b, uint16_t _c, uint16_t _d,
+        uint16_t _e, uint16_t _f, uint16_t _g, uint16_t _h);
 }
 
 #endif
