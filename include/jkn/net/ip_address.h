@@ -3,8 +3,8 @@
 #include "jkn/config.h"
 #if JKN_CONFIG_SOCKETS
 
-#include <stdint.h>
-
+#include <stdint.h> // uintX_t
+#include <stdlib.h> // size_t
 namespace jkn
 {
     struct IPAddressType

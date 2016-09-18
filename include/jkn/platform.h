@@ -74,7 +74,7 @@
 #     define JKN_PLATFORM_LINUX       1
 #endif
 
-#define JKN_PLATFORM_POSIX (0 \\
+#define JKN_PLATFORM_POSIX (0 \
                           || JKN_PLATFORM_LINUX \
                            )
 

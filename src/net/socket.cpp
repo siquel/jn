@@ -10,11 +10,17 @@
 #   include <winsock2.h>
 #   include <ws2tcpip.h>
 #   include <ws2ipdef.h>
+#elif JKN_PLATFORM_LINUX
+#   include <netinet/in.h> // s_addr
+#   include <fcntl.h> //fcntl
+#   include <sys/socket.h> // socket
 #endif
+
 
 #include "jkn/net/socket.h"
 #include "jkn/net/ip_address.h"
 #include "jkn/error.h"
+#include <string.h> // memcpy
 #include <stdio.h> // snprintf
 #include "jkn/debug.h" // debugOutput
 
@@ -49,7 +55,7 @@ namespace jkn
             sockAddress.sin_port = htons(_address.m_port);
             sockAddress.sin_addr.s_addr = _address.m_ipv4;
 
-            if (::bind(m_socket, (struct sockaddr*)&sockAddress, sizeof(sockAddress)) == SOCKET_ERROR)
+            if (::bind(m_socket, (struct sockaddr*)&sockAddress, sizeof(sockAddress)) < 0) // SOCKET_ERROR = -1
             {
                 m_error = SocketError::BindFailed;
                 return;
@@ -62,7 +68,7 @@ namespace jkn
             memcpy(&sockAddress.sin6_addr, _address.m_ipv6, sizeof(_address.m_ipv6));
             sockAddress.sin6_port = htons(_address.m_port);
 
-            if (::bind(m_socket, (struct sockaddr*)&sockAddress, sizeof(sockAddress)) == SOCKET_ERROR)
+            if (::bind(m_socket, (struct sockaddr*)&sockAddress, sizeof(sockAddress)) < 0) // SOCKET_ERROR = -1
             {
                 m_error = SocketError::BindFailed;
                 return;
@@ -121,7 +127,7 @@ namespace jkn
         {
             struct sockaddr_in* ipv4 = (struct sockaddr_in*) &sockaddrFrom;
             _from.m_type = IPAddressType::IPv4;
-            _from.m_ipv4 = ipv4->sin_addr.S_un.S_addr;
+            _from.m_ipv4 = ipv4->sin_addr.s_addr;
             _from.m_port = ntohs(ipv4->sin_port); // port is host byte
         }
         else if (sockaddrFrom.sin_family == AF_INET6)
@@ -148,7 +154,7 @@ namespace jkn
             memset(&sockAddr, 0, sizeof(sockAddr));
             sockAddr.sin_family = AF_INET;
             sockAddr.sin_port = htons(_to.m_port);
-            sockAddr.sin_addr.S_un.S_addr = _to.m_ipv4;
+            sockAddr.sin_addr.s_addr = _to.m_ipv4;
             int32_t sentBytes = sendto(m_socket, (char*)_data, _bytes, 0 /* flags */, (struct sockaddr*)&sockAddr, sizeof(sockaddr_in));
 
             return sentBytes == _bytes;

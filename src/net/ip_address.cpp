@@ -8,6 +8,9 @@
 #   include <winsock2.h>
 #   include <ws2tcpip.h>
 #   include <ws2ipdef.h>
+#elif JKN_PLATFORM_LINUX
+#   include <arpa/inet.h> // htons, htonl
+
 #endif
 
 #include "jkn/net/ip_address.h"
