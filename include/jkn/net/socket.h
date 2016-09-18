@@ -10,6 +10,17 @@ namespace jkn
 {
     struct IPAddress;
 
+    struct SocketError
+    {
+        enum Enum
+        {
+            NoError,
+            CreateFailed,
+            BindFailed,
+            SetToNonBlockingFailed
+        };
+    };
+
     class UDPSocket
     {
     public:
@@ -27,6 +38,7 @@ namespace jkn
 #elif JKN_PLATFORM_POSIX
         int32_t m_socket;
 #endif
+        SocketError::Enum m_error;
     };
 }
 

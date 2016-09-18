@@ -15,11 +15,16 @@
 #include "jkn/net/socket.h"
 #include "jkn/net/ip_address.h"
 #include "jkn/error.h"
+#include <stdio.h> // snprintf
+#include "jkn/debug.h" // debugOutput
 
 namespace jkn
 {
-    UDPSocket::UDPSocket(const IPAddress& _address)
+    UDPSocket::UDPSocket(const IPAddress& _address) :
+        m_error(SocketError::NoError)
     {
+        JKN_ASSERT(_address.m_type != IPAddressType::None, "Invalid address type");
+
         m_socket = socket(
             (_address.m_type == IPAddressType::IPv4) ? AF_INET : AF_INET6,
             SOCK_DGRAM,
@@ -29,7 +34,11 @@ namespace jkn
 #if JKN_PLATFORM_WINDOWS
         if (m_socket == INVALID_SOCKET)
         {
-            JKN_ASSERT(0, "Not implemented, set error or something");
+            m_error = SocketError::CreateFailed;
+            char buf[128] = {};
+            snprintf(buf, sizeof(buf), "Socket creation failed: WSAGetLastError() = %d\n", WSAGetLastError());
+            jkn::debugOutput(buf);
+            return;
         }
 #endif
 
@@ -42,7 +51,7 @@ namespace jkn
 
             if (::bind(m_socket, (struct sockaddr*)&sockAddress, sizeof(sockAddress)) == SOCKET_ERROR)
             {
-                JKN_ASSERT(0, "Not implemented, bind failed");
+                m_error = SocketError::BindFailed;
                 return;
             }
         }
@@ -55,7 +64,7 @@ namespace jkn
 
             if (::bind(m_socket, (struct sockaddr*)&sockAddress, sizeof(sockAddress)) == SOCKET_ERROR)
             {
-                JKN_ASSERT(0, "Not implemented, bind failed");
+                m_error = SocketError::BindFailed;
                 return;
             }
         }
@@ -64,7 +73,7 @@ namespace jkn
         DWORD iMode = 1; // If iMode != 0, non-blocking mode is enabled.
         if (::ioctlsocket(m_socket, FIONBIO, &iMode) != NO_ERROR)
         {
-            JKN_ASSERT(0, "ioctlsocket failed");
+            m_error = SocketError::SetToNonBlockingFailed;
             return;
         }
 #endif
