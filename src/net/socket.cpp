@@ -46,6 +46,8 @@ namespace jkn
             jkn::debugOutput(buf);
             return;
         }
+#elif JKN_PLATFORM_LINUX
+#   error "socket creation error checking not implemented"
 #endif
 
         if (_address.m_type == IPAddressType::IPv4)
@@ -82,6 +84,8 @@ namespace jkn
             m_error = SocketError::SetToNonBlockingFailed;
             return;
         }
+#elif JKN_PLATFORM_LINUX
+#   error "Non blocking socket not implemented"
 #endif
     }
 
@@ -91,6 +95,8 @@ namespace jkn
 
 #if JKN_PLATFORM_WINDOWS
         ::closesocket(m_socket);
+#elif JKN_PLATFORM_LINUX
+        ::close(m_socket);
 #endif
         m_socket = 0;
     }
@@ -120,6 +126,8 @@ namespace jkn
 
             return 0;
         }
+#elif JKN_PLATFORM_LINUX
+#   error "error checking not implemented"
 #endif
         JKN_ASSERT(result >= 0, "Invalid result from recvfrom()");
 
