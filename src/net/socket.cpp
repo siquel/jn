@@ -14,6 +14,8 @@
 #   include <netinet/in.h> // s_addr
 #   include <fcntl.h> //fcntl
 #   include <sys/socket.h> // socket
+#   include <unistd.h> // close
+#   include <errno.h> // errno
 #endif
 
 
@@ -44,7 +46,10 @@ namespace jkn
             return -1;
         }
 #elif JKN_PLATFORM_LINUX
-#   error "socket creation error checking not implemented"
+        if (_socket.m_socket <= 0)
+        {
+            return -1;
+        }
 #endif
         return 0;
     }
@@ -146,7 +151,14 @@ namespace jkn
             return 0;
         }
 #elif JKN_PLATFORM_LINUX
-#   error "error checking not implemented"
+        if (result <= 0)
+        {
+            if (errno == EAGAIN) return 0;
+
+            // TODO trace
+            
+            return 0;
+        }
 #endif
         JKN_ASSERT(result >= 0, "Invalid result from recvfrom()");
 

@@ -6,7 +6,7 @@ namespace jkn
 {
     void abort(const char* _file, uint16_t _line, const char* _format, va_list _args)
     {
-        __debugbreak();
+//        __debugbreak();
     }
 
     void abort(const char* _file, uint16_t _line, const char* _format, ...)
