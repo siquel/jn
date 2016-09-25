@@ -34,14 +34,14 @@ namespace jkn
     void addressSetHost(IPAddress& _address, uint16_t _a, uint16_t _b, uint16_t _c, uint16_t _d, uint16_t _e, uint16_t _f, uint16_t _g, uint16_t _h)
     {
         _address.m_type = IPAddressType::IPv6;
-        _address.m_ipv6[0] = ::htons(_a);
-        _address.m_ipv6[1] = ::htons(_b);
-        _address.m_ipv6[2] = ::htons(_c);
-        _address.m_ipv6[3] = ::htons(_d);
-        _address.m_ipv6[4] = ::htons(_e);
-        _address.m_ipv6[5] = ::htons(_f);
-        _address.m_ipv6[6] = ::htons(_g);
-        _address.m_ipv6[7] = ::htons(_h);
+        _address.m_ipv6[0] = htons(_a);
+        _address.m_ipv6[1] = htons(_b);
+        _address.m_ipv6[2] = htons(_c);
+        _address.m_ipv6[3] = htons(_d);
+        _address.m_ipv6[4] = htons(_e);
+        _address.m_ipv6[5] = htons(_f);
+        _address.m_ipv6[6] = htons(_g);
+        _address.m_ipv6[7] = htons(_h);
     }
 
     void addressGetHostIp(const IPAddress& _address, char* _hostName, size_t _len)
