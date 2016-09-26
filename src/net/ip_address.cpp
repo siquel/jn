@@ -48,10 +48,10 @@ namespace jkn
     {
         if (_address.m_type == IPAddressType::IPv4)
         {
-            uint8_t a = _address.m_ipv4 & 0xff;
+            /*uint8_t a = _address.m_ipv4 & 0xff;
             uint8_t b = (_address.m_ipv4 >> 8) & 0xff;
             uint8_t c = (_address.m_ipv4 >> 16) & 0xff;
-            uint8_t d = (_address.m_ipv4 >> 24) & 0xff;
+            uint8_t d = (_address.m_ipv4 >> 24) & 0xff;*/
 
             inet_ntop(AF_INET, (void*)&_address.m_ipv4, _hostName, _len);
         }
