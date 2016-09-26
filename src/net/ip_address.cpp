@@ -53,7 +53,7 @@ namespace jkn
             uint8_t c = (_address.m_ipv4 >> 16) & 0xff;
             uint8_t d = (_address.m_ipv4 >> 24) & 0xff;
 
-            snprintf(_hostName, _len, "%d.%d.%d.%d", a, b, c, d);
+            inet_ntop(AF_INET, (void*)&_address.m_ipv4, _hostName, _len);
         }
         else if (_address.m_type == IPAddressType::IPv6)
         {
