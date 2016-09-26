@@ -49,6 +49,12 @@ function toolchain(build_dir, lib_dir)
 		"NoEditAndContinue",
 		"Symbols",
 	}
+	-- force PRIuXX etc. to be visible in C++ builds
+	defines {
+		"__STDC_LIMIT_MACROS",
+		"__STDC_FORMAT_MACROS",
+		"__STDC_CONSTANT_MACROS",
+	}
 
 	configuration { "debug" }
 		targetsuffix "Debug" 
