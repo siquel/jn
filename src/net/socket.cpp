@@ -40,9 +40,9 @@ namespace jkn
         if (_socket.m_socket == INVALID_SOCKET)
         {
             _socket.m_socket = 0;
-            char buf[128] = {};
-            snprintf(buf, sizeof(buf), "Socket creation failed: WSAGetLastError() = %d\n", WSAGetLastError());
-            jkn::debugOutput(buf);
+//            char buf[128] = {};
+//            snprintf(buf, sizeof(buf), "Socket creation failed: WSAGetLastError() = %d\n", WSAGetLastError());
+//            jkn::debugOutput(buf);
             return -1;
         }
 #elif JKN_PLATFORM_LINUX
