@@ -13,7 +13,7 @@ function toolchain(build_dir, lib_dir)
 	}
 
 	if (_ACTION == nil) then return false end
-    
+
     location(path.join(build_dir, "projects", _ACTION))
 
 	if _ACTION == "clean" then
@@ -45,9 +45,15 @@ function toolchain(build_dir, lib_dir)
 		"Symbols",
         "ExtraWarnings",
 	}
+	-- force PRIuXX etc. to be visible in C++ builds
+	defines {
+		"__STDC_LIMIT_MACROS",
+		"__STDC_FORMAT_MACROS",
+		"__STDC_CONSTANT_MACROS",
+	}
 
 	configuration { "debug" }
-		targetsuffix "Debug" 
+		targetsuffix "Debug"
 
 	configuration { "Release" }
 		flags {
@@ -56,6 +62,9 @@ function toolchain(build_dir, lib_dir)
 		targetsuffix "Release"
 
 	configuration { "vs*" }
+		includedirs {
+			path.join(JN_DIR, "include/compat/msvc")
+		}
 		defines {
 			"_WIN32",
 			"_HAS_EXCEPTIONS=0",
@@ -89,8 +98,8 @@ function toolchain(build_dir, lib_dir)
 	configuration { "linux-gcc*", "x32" }
 		targetdir (path.join(build_dir, "linux32_gcc/bin"))
 		objdir    (path.join(build_dir, "linux32_gcc/obj"))
-		libdirs { 
-			path.join(lib_dir, "lib/linux32_gcc") 
+		libdirs {
+			path.join(lib_dir, "lib/linux32_gcc")
 		}
 		buildoptions {
 			"-m32",
@@ -99,8 +108,8 @@ function toolchain(build_dir, lib_dir)
 	configuration { "linux-gcc*", "x64" }
 		targetdir (path.join(build_dir, "linux64_gcc/bin"))
 		objdir    (path.join(build_dir, "linux64_gcc/obj"))
-		libdirs { 
-			path.join(lib_dir, "lib/linux64_gcc") 
+		libdirs {
+			path.join(lib_dir, "lib/linux64_gcc")
 		}
 		buildoptions {
 			"-m64",
@@ -109,7 +118,7 @@ function toolchain(build_dir, lib_dir)
 	configuration { "linux-clang", "x32" }
 		targetdir (path.join(build_dir, "linux32_clang/bin"))
 		objdir    (path.join(build_dir, "linux32_clang/obj"))
-		libdirs { 
+		libdirs {
 			path.join(lib_dir, "lib/linux32_clang")
 		}
 		buildoptions {
@@ -119,8 +128,8 @@ function toolchain(build_dir, lib_dir)
 	configuration { "linux-clang", "x64" }
 		targetdir (path.join(build_dir, "linux64_clang/bin"))
 		objdir    (path.join(build_dir, "linux64_clang/obj"))
-		libdirs { 
-			path.join(lib_dir, "lib/linux64_clang") 
+		libdirs {
+			path.join(lib_dir, "lib/linux64_clang")
 		}
 		buildoptions {
 			"-m64",
