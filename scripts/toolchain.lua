@@ -26,10 +26,6 @@ function toolchain(build_dir, lib_dir)
 			os.exit(1)
 		end
 
-		flags {
-			"ExtraWarnings"
-		}	
-
 		if "linux-gcc" == _OPTIONS["gcc"] then
             location(path.join(build_dir, "projects", _ACTION .. "-linux"))
 		elseif "linux-clang" == _OPTIONS["gcc"] then
@@ -40,7 +36,6 @@ function toolchain(build_dir, lib_dir)
 		end
 	end
 
-
 	flags {
 		"NoPCH",
 		"NativeWChar",
@@ -48,6 +43,7 @@ function toolchain(build_dir, lib_dir)
 		"NoExceptions",
 		"NoEditAndContinue",
 		"Symbols",
+        "ExtraWarnings",
 	}
 
 	configuration { "debug" }
