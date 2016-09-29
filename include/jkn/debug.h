@@ -13,6 +13,8 @@ namespace jkn
     {
 #if JKN_PLATFORM_WINDOWS
         __debugbreak();
+#elif JKN_PLATFORM_LINUX
+        __asm__("int $3");
 #endif
     }
 
