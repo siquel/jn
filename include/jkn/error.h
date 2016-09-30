@@ -17,5 +17,5 @@ namespace jkn
                 }                                                                                                                     \
             break; } 
 #else
-#   define JKN_ASSERT(condition, ...) do { } while(0)
+#   define JKN_ASSERT(condition, ...) for (;;) { break; }
 #endif
