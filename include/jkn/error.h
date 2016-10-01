@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdint.h>
+#include "jkn/macros.h"
 
 namespace jkn
 {
@@ -11,7 +12,7 @@ namespace jkn
 #   define JKN_ASSERT(expr, format, ...)                                                                                              \
             for(;;)                                                                                                                   \
             {                                                                                                                         \
-                if (!(expr))                                                                                                          \
+                if (!JKN_IGNORE_C4127(expr))                                                                                          \
                 {                                                                                                                     \
                       jkn::abort(__FILE__, uint16_t(__LINE__), "\nAssertion failed: %s\n\t " format "\n", #expr, ##__VA_ARGS__);      \
                 }                                                                                                                     \
